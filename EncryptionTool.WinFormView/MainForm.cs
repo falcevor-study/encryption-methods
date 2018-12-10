@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using EncryptionTool.Model.TWOFISH;
 
 namespace EncryptionTool.WinFormView
 {
@@ -18,20 +19,6 @@ namespace EncryptionTool.WinFormView
 
         public MainForm()
         {
-            try
-            {
-                var a1 = Encoding.UTF8.GetBytes("123456789qwerqerlejwasdfasdffjфвыафываdjasfldjlasdkfj;adkakljasdlfasd");
-                var a2 = Encoding.UTF8.GetBytes("123456789afsdfljdhlaasdfsdjkfjaasdfasdfkasdlk;fjasd;fjkasd;fkjasdfasd");
-                var a3 = Encoding.UTF8.GetBytes("123456789asdfasdjhsdsdfgsdf g sdfg sdf gfd sg dsfg fdghdfghdfhgdf54 y4 y err f");
-
-                _method = new PikeMethod(a1, a2, a3);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show($"Error has been occured during program initialization.\n{ ex.Message }");
-                throw;
-            }
-            
             InitializeComponent();
         }
 
@@ -54,6 +41,23 @@ namespace EncryptionTool.WinFormView
                 return;
             }
 
+            if (string.IsNullOrEmpty(KeyTextBox.Text) || KeySizeComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Key or/and its size is/are not defined");
+                return;
+            }
+
+            var keySize = Int32.Parse(KeySizeComboBox.Items[KeySizeComboBox.SelectedIndex].ToString());
+            var keyBytes = Encoding.UTF8.GetBytes(KeyTextBox.Text);
+
+            if (keySize != keyBytes.Length * 8)
+            {
+                MessageBox.Show("Key has incorrect length");
+                return;
+            }
+
+            _method = new TwofishMethod(keySize, keyBytes);
+            
             var dlg = new SaveFileDialog();
             if (dlg.ShowDialog() == DialogResult.Cancel)
                 return;
@@ -80,9 +84,24 @@ namespace EncryptionTool.WinFormView
             }
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void GenerateKeyButton_Click(object sender, EventArgs e)
         {
+            if (KeySizeComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Please select key size first");
+                return;
+            }
 
+            var keySize = Int32.Parse(KeySizeComboBox.Items[KeySizeComboBox.SelectedIndex].ToString());
+            var key = new byte[keySize / 8];
+            var random = new Random();
+            
+            for (int i = 0; i < key.Length; ++i)
+            {
+                key[i] = (byte)random.Next(1, 127);
+            }
+
+            KeyTextBox.Text = Encoding.UTF8.GetString(key);
         }
     }
 }

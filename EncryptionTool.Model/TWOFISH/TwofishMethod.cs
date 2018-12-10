@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EncryptionTool.Model.TWOFISH
 {
-    public class TwofishMethod
+    public class TwofishMethod : IEncryptionMethod
     {
         private readonly byte[,] MDS = 
         {
@@ -29,9 +29,9 @@ namespace EncryptionTool.Model.TWOFISH
         private readonly int polynomial = 0b101101001; // x^8 + x^6 -+ x^5 + x^3 + 1
 
         private int _keySize;
-        private int[] _key;
+        private byte[] _key;
 
-        public TwofishMethod(int keySize, int[] key)
+        public TwofishMethod(int keySize, byte[] key)
         {
             this._keySize = keySize;
             this._key = key;
@@ -45,7 +45,9 @@ namespace EncryptionTool.Model.TWOFISH
         public byte[] Encode(byte[] bytes)
         {
             var text = new List<int>();
+            var resutl = (byte[])bytes.Clone();
 
+            // Join bytes to ints
             int count = 0;
             byte[] word = new byte[4];
 
@@ -68,6 +70,7 @@ namespace EncryptionTool.Model.TWOFISH
                 text.Add(BitConverter.ToInt32(word, 0));
             }
 
+            // Join 4-byte sequences into 32 int subblocks and encode this
             var result = new List<int>();
 
             int cur = 0;
@@ -90,10 +93,11 @@ namespace EncryptionTool.Model.TWOFISH
                 {
                     block[cur] = 0;
                 }
+                Whitering(resutl, _key);
                 result.AddRange(EncodeBlock(block));
             }
 
-            return result.SelectMany(x => BitConverter.GetBytes(x)).ToArray();
+            return resutl;
         }
 
         private int[] EncodeBlock(int[] block)
@@ -104,7 +108,14 @@ namespace EncryptionTool.Model.TWOFISH
             int[] K;
             int[] V;
 
-            GenerateKeys(_key, out K, out V);
+            var key = new int[_keySize / 32];
+
+            for (int i = 0; i < key.Length; ++i)
+            {
+                key[i] = BitConverter.ToInt32(_key, i * 4);
+            }
+
+            GenerateKeys(key, out K, out V);
 
             Whitering(block, K);
 
@@ -238,7 +249,7 @@ namespace EncryptionTool.Model.TWOFISH
 
             int count = 0;
 
-            for (int i = 0; i < sourceKey.Length; ++i)
+            for (int i = 0; i <= sourceKey.Length; ++i)
             {
                 if (i % 4 == 0 && i != 0)
                 {
@@ -246,7 +257,9 @@ namespace EncryptionTool.Model.TWOFISH
                     word = new byte[4];
                     count++;
                 }
-                word[3 - (i % 4)] = sourceKey[i];
+
+                if (i < sourceKey.Length)
+                    word[3 - (i % 4)] = sourceKey[i];
             }
 
             var Me = MeList.ToArray();
@@ -279,6 +292,12 @@ namespace EncryptionTool.Model.TWOFISH
         {
             for (int i = 0; i < text.Length; ++i)
                 text[i] = text[i] ^ key[i % key.Length];
+        }
+
+        private void Whitering(byte[] text, byte[] key)
+        {
+            for (int i = 0; i < text.Length; ++i)
+                text[i] = (byte)(text[i] ^ key[i % key.Length]);
         }
 
         // Mult by MDS mutrix with mod by polynomial of Galois field.
