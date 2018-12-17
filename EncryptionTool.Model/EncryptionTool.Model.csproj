@@ -44,6 +44,10 @@
     <Compile Include="Base\IEncryptionMethod.cs" />
     <Compile Include="Base\IGenerator.cs" />
     <Compile Include="Base\ISyncScheme.cs" />
+    <Compile Include="CRYPTON\CryptonKeyExpander.cs" />
+    <Compile Include="CRYPTON\CryptonMethod.cs" />
+    <Compile Include="CRYPTON\IKeyExpander.cs" />
+    <Compile Include="CRYPTON\RoundTypes.cs" />
     <Compile Include="PIKE\PikeMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PIKE\PikeSyncScheme.cs" />

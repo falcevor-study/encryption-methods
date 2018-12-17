@@ -50,6 +50,7 @@ namespace EncryptionTool.Model.TWOFISH
             // Join bytes to ints
             int count = 0;
             byte[] word = new byte[4];
+            Whitering(resutl, _key);
 
             foreach (var x in bytes)
             {
@@ -93,7 +94,6 @@ namespace EncryptionTool.Model.TWOFISH
                 {
                     block[cur] = 0;
                 }
-                Whitering(resutl, _key);
                 result.AddRange(EncodeBlock(block));
             }
 

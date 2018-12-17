@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionTool.WinFormView"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTests", "SimpleTests\SimpleTests.csproj", "{F84BB55E-BA15-40EA-A1B4-E0E2C50BCDA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionTool.WinFormViewCrypton", "EncryptionTool.WinFormViewCrypton\EncryptionTool.WinFormViewCrypton.csproj", "{4BB0FDF3-692F-4011-9EA7-FB7F5CCD65FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F84BB55E-BA15-40EA-A1B4-E0E2C50BCDA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F84BB55E-BA15-40EA-A1B4-E0E2C50BCDA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F84BB55E-BA15-40EA-A1B4-E0E2C50BCDA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BB0FDF3-692F-4011-9EA7-FB7F5CCD65FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BB0FDF3-692F-4011-9EA7-FB7F5CCD65FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BB0FDF3-692F-4011-9EA7-FB7F5CCD65FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BB0FDF3-692F-4011-9EA7-FB7F5CCD65FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

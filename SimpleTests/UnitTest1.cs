@@ -4,21 +4,17 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EncryptionTool.Model.TWOFISH;
 using System.Linq;
+using EncryptionTool.Model.CRYPTON;
 
 namespace SimpleTests
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    /// Сводное описание для UnitTest1
     /// </summary>
     [TestClass]
-    public class Twofish
+    public class Crypton
     {
-        public Twofish()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+        public Crypton() { }
 
         private TestContext testContextInstance;
 
@@ -61,32 +57,7 @@ namespace SimpleTests
         #endregion
 
         [TestMethod]
-        public void CheckGaluaFieldMod()
-        { 
-            Assert.AreEqual(TwofishMethod.Mod(103, 15), 1);
-            Assert.AreEqual(TwofishMethod.Mod(79, 13), 4);
-        }
-
-        [TestMethod]
-        public void CheckShift()
-        {
-            int x = 42345;
-            int y = TwofishMethod.LeftShift(x, 100);
-            Assert.AreEqual(TwofishMethod.RightShift(y, 100), x);
-
-            Assert.AreEqual(TwofishMethod.RightShift4(8, 3), 1);
-            Assert.AreEqual(TwofishMethod.RightShift4(10, 3), 5);
-            Assert.AreEqual(TwofishMethod.RightShift4(11, 4), 11);
-            Assert.AreEqual(TwofishMethod.RightShift4(11, 2), 14);
-
-            Assert.AreEqual(TwofishMethod.LeftShift4(1, 3), 8);
-            Assert.AreEqual(TwofishMethod.LeftShift4(5, 3), 10);
-            Assert.AreEqual(TwofishMethod.LeftShift4(11, 4), 11);
-            Assert.AreEqual(TwofishMethod.LeftShift4(14, 2), 11);
-        }
-
-        [TestMethod]
-        public void CheckTwofish()
+        public void KeyExpanderTest()
         {
 
         }

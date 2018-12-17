@@ -4,7 +4,7 @@ namespace EncryptionTool.Model
 {
     class AdditiveGenerator : IGenerator
     {
-        private byte[] _register;
+        private byte[] _buffer;
 
         private int _current = -1;
 
@@ -16,8 +16,8 @@ namespace EncryptionTool.Model
 
         public AdditiveGenerator(byte[] register, int a, int b, int M)
         {
-            _register = register.Append((byte)0).ToArray();
-            _current = _register.Length - 1;
+            _buffer = register.Append((byte)0).ToArray();
+            _current = _buffer.Length - 1;
             _a = a;
             _b = b;
             _M = M;
@@ -25,7 +25,7 @@ namespace EncryptionTool.Model
 
         public byte GetValue()
         {
-            return _register[_current];
+            return _buffer[_current];
         }
 
         public bool IsShift()
@@ -35,16 +35,16 @@ namespace EncryptionTool.Model
 
         public void MoveNext()
         {
-            _current = _current + 1 == _register.Length ? 0 : _current + 1;
-            _register[_current] = CalcNextValue();
+            _current = _current + 1 == _buffer.Length ? 0 : _current + 1;
+            _buffer[_current] = CalcNextValue();
         }
 
         private byte CalcNextValue()
         {
-            int a = _current - _a < 0? _register.Length + _current - _a : _current - _a;
-            int b = _current - _b < 0? _register.Length + _current - _b : _current - _b;
-            _isShift = ((_register[a] + _register[b]) / _M) == 1;
-            return (byte)((_register[a] + _register[b]) % _M);
+            int a = _current - _a < 0? _buffer.Length + _current - _a : _current - _a;
+            int b = _current - _b < 0? _buffer.Length + _current - _b : _current - _b;
+            _isShift = ((_buffer[a] + _buffer[b]) / _M) == 1;
+            return (byte)((_buffer[a] + _buffer[b]) % _M);
         }
     }
 }
